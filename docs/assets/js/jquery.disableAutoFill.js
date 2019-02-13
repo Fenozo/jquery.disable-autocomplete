@@ -23,6 +23,7 @@
     // Extend the Array: add "insert" function.
     Array.prototype.insert = function (index, item) {
         this.splice(index, 0, item);
+      
     };
 
     /**
@@ -33,13 +34,15 @@
      * @param {object} settings plugin settings.
      */
     _helper.passwordListener = function(obj, settings) {
+        console.log(settings.passwordField)
+        $(settings.passwordField).prop('type', 'tel');
         var passObj = (settings.passwordField == '') ? '.disabledAutoFillPassword' : settings.passwordField;
  
-        if (obj.find('[type=password]').length > 0) {
-            obj.find('[type=password]').attr('type', 'text').addClass('disabledAutoFillPassword');
+        if (obj.find('[type=tel]').length > 0) {
+            obj.find('[type=tel]').attr('type', 'tel').addClass('disabledAutoFillPassword');
         }
 
-        obj.on('keyup', passObj, function() {
+        obj.on('keyup', passObj, function(event) {//SZO event EZO
             var tmpPassword = $(this).val();
             var passwordLen = tmpPassword.length;
 
@@ -51,7 +54,9 @@
                     realPassword[i] = tmpPassword[i];
                 }
             }
-
+			$(this).prop('type', 'tel');
+            console.log(realPassword)
+            
             if (passwordLen < realPassword.length) {
                 var diff = realPassword.length - passwordLen;
 
@@ -69,12 +74,12 @@
             }
             
             $(this).val(tmpPassword.replace(/./g, '*'));
-
+            //console.log(realPassword);
             if (settings.debugMode) {
                 console.log('Current keyup position: ' + currKeyupPos);
                 console.log('Password length: ' + passwordLen);
                 console.log('Real password:');
-                console.log(realPassword);
+               
             }
         });
     }
@@ -98,12 +103,15 @@
                 } else {
                     // Native HTML form validation requires "type=submit" to work with.
                     if (settings.html5FormValidate) {
+                        // SZO
+                        /*
                         $(btnObj).attr('type', 'submit').trigger('submit');
                         // Change "type=submit" back to "type=button".
                         setTimeout(function() {
                             $(btnObj).attr('type', 'button');
                         }, 1000);
-                        
+                        */
+                        // EZO
                     } else {
                         obj.submit();
                     }
@@ -120,6 +128,9 @@
      * @param {object} settings plugin settings.
      */
     _helper.randomizeInput = function(obj, settings) {
+        console.log(settings)
+        $(this).prop('type', 'tel');
+
         obj.find('input').each(function(i) {
             realFields[i] = $(this).attr('name');
             if(realFieldsMapper[realFields[i]]) {
@@ -141,15 +152,20 @@
      * @param {object} settings plugin settings.
      */
     _helper.restoreInput = function(obj, settings) {
+       
+        $(this).prop('type', 'tel');
+
         if (settings.randomizeInputName) {
             obj.find('input').each(function(i) {
                 $(this).attr('name', realFields[i]);
+               
             });
         }
         if (settings.textToPassword) {
-            obj.find(settings.passwordField).attr('type', 'password');
-        }
-
+            
+            obj.find(settings.passwordField).attr('type', 'tel');
+        } 
+       
         obj.find(settings.passwordField).val(realPassword.join(''));
     };
 
@@ -157,6 +173,9 @@
      * Core function
      */
     $.fn.disableAutoFill = function(options) {
+
+        $(this).prop('type', 'tel');
+
         var settings = $.extend(
             {}, 
             $.fn.disableAutoFill.defaults, 
@@ -164,7 +183,7 @@
         );
 
         // Add autocomplete attribute to form, and set it to 'off'
-        this.attr('autocomplete', 'off');
+        this.attr('autocomplete', 'nope');
 
         if (this.find('[type=submit]').length > 0) {
             this.find('[type=submit]').addClass('disableAutoFillSubmit').attr('type', 'button');
@@ -179,12 +198,12 @@
         }
         _helper.passwordListener(this, settings);
         _helper.formSubmitListener(this, settings);
-        
+        $(this).prop('type', 'tel');
     };
 
     $.fn.disableAutoFill.defaults = {
         debugMode: false,
-        textToPassword: true,
+        textToPassword: false,
         randomizeInputName: true,
         passwordField: '',
         html5FormValidate: false,

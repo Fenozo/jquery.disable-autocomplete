@@ -6,17 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>jQuery.disableAutoFill plugin - User Guide</title>
     <!-- jQuery & Bootstrap //-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery.disableAutoFill //-->
     <script>
         document.write('<link href="assets/css/style.css?v=' + Math.random() + '" rel="stylesheet">');
+        document.write('<script src="assets/js/jquery.js?v=' + Math.random() + '"><\/script>');
         document.write('<script src="assets/js/jquery.disableAutoFill.js?v=' + Math.random() + '"><\/script>');
     </script>
     <!-- Syntax highlighting //-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <!-- 
+        SZO
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/javascript.min.js"></script>
+        EZO
+    -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
 </head>
 <body>
@@ -28,8 +33,10 @@
         <p>The easiest solution for disabling Google Chrome auto-fill, auto-complete functions.</p>
         <hr />
         <p>
-            <iframe src="https://ghbtns.com/github-btn.html?user=terrylinooo&repo=jquery.disableAutoFill&type=star&count=true" frameborder="0" scrolling="0" width="120px" height="20px"></iframe>
+           <!--
+                <iframe src="https://ghbtns.com/github-btn.html?user=terrylinooo&repo=jquery.disableAutoFill&type=star&count=true" frameborder="0" scrolling="0" width="120px" height="20px"></iframe>
             <iframe src="https://ghbtns.com/github-btn.html?user=terrylinooo&type=follow&count=true" frameborder="0" scrolling="0" width="190px" height="20px"></iframe>
+           -->
         </p>
     </div>
     <div class = "container">
@@ -39,7 +46,7 @@
                 <hr class="colorgraph"><br>
                 <div id="origin-source">
                     <input type="text" class="form-control" name="username" placeholder="Username" />
-                    <input type="text" class="form-control password" name="password" placeholder="Password" />     		  
+                    <input type="text" class="form-control password" name="tel" placeholder="Password" />     		  
                     <button class="btn btn-lg btn-primary btn-block" name="demo-submit" value="Login" type="Submit">Login</button>
                 </div>  			
             </form>
@@ -62,21 +69,7 @@ $('#login-form').disableAutoFill({
     }
 });
 
-function checkForm() {
-    form = document.getElementById('login-form');
 
-    if (form.password.value == '') {
-        alert('Cannot leave Password field blank.');
-        form.password.focus();
-        return false;
-    }
-    if (form.username.value == '') {
-        alert('Cannot leave User Id field blank.');
-        form.username.focus();
-        return false;
-    }
-    return true;
-}
 
             </code></pre>
             <h4>Examples</h4>
@@ -95,62 +88,19 @@ function checkForm() {
 
     <script>
 
-    function checkForm() {
-        form = document.getElementById('login-form');
-
-        if (form.password.value == '') {
-            alert('Cannot leave Password field blank.');
-            form.password.focus();
-            return false;
+  
+    /*SZO*/
+    $('#login-form').disableAutoFill({
+        passwordField: '.password',
+        debugMode: false,
+        randomizeInputName: true,
+        callback: function() {
+            return null;
         }
-        if (form.username.value == '') {
-            alert('Cannot leave User Id field blank.');
-            form.username.focus();
-            return false;
-        }
-        return true;
-    }
-
-    function enablePlugin() {
-        $('#login-form').disableAutoFill({
-            passwordField: '.password',
-            debugMode: false,
-            randomizeInputName: true,
-            callback: function() {
-                return checkForm();
-            }
-        });
-        $('#source-changes').html($('#origin-source').html().trim());
-    }
-
-    var isSubmit = false;
-
-    function submitThisForm() {
-        isSubmit = true;
-        $('#login-form')[0].submit();
-    }
-
-    $(function() {
-
-        $('pre code').each(function(i, block) {
-            hljs.highlightBlock(block);
-        });
-
-        $('#source-changes').html($('#origin-source').html().trim());
-
-        $('input').on('keyup', function(event) {
-            $('#source-changes').html($('#origin-source').html().trim());
-        });
-
-        $('#login-form').on('submit', function(event) {
-            if (!isSubmit) {
-                $('#demo-form-ouput').html($(this).serialize());
-                $('#demo-modal').modal('show');
-                event.preventDefault();
-                return false;
-            }
-        });
     });
+    /*EZO*/
+
+
 
     </script>
     <div id="demo-modal" class="modal fade">
